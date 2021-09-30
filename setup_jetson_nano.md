@@ -53,7 +53,7 @@ sudo dpkg-reconfigure lightdm
 free -h
 ```
 
-**6. Create swap memory:**
+**6. Add swap memory:**
 ```
 # Check swap memory before
 free -h
