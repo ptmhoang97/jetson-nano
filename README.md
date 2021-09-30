@@ -1,4 +1,4 @@
-# jetson
+# Setup Jetson Nano
 
 **1. Flash and boot:**\
 https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit
