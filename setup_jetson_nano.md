@@ -43,15 +43,28 @@ EndSection
 
 **5. Save RAM:**
 ```
+# Check RAM before
 free -h
+
+# Switch to lightdm
 sudo dpkg-reconfigure lightdm
+
+# Check RAM after
+free -h
 ```
 
 **6. Create swap memory:**
 ```
+# Check swap memory before
+free -h
+
+# Create swap memory
 sudo fallocate -l 4G /var/swapfile
 sudo chmod 600 /var/swapfile
 sudo mkswap /var/swapfile
 sudo swapon /var/swapfile
 sudo bash -c 'echo "/var/swapfile swap swap defaults 0 0" >> /etc/fstab'
+
+# Check swap memory after
+free -h
 ```
