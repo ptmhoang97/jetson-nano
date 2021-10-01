@@ -35,6 +35,7 @@ make
 sudo nvpmodel -m 0
 sudo jetson_clocks
 ```
+
 **5. Test with yolov4:**
    - Preparation:
    ```
@@ -52,4 +53,20 @@ sudo jetson_clocks
    - Test on video:
    ```
    ./darknet detector demo cfg/coco.data cfg/yolov4-416.cfg yolov4.weights traffic.mp4 -gpus 0
+   ```
+   
+**6. Test with yolov4-tiny:**
+   - Preparation:
+   ```
+   # Download weight:
+   wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights -q --show-progress --no-clobber
+   ```
+   - Test on image:
+   ``` 
+   # Detect on image
+   ./darknet detector test cfg/coco.data cfg/yolov4-tiny.cfg yolov4-tiny.weights data/dog.jpg -gpus 0
+   ```
+   - Test on video:
+   ```
+   ./darknet detector demo cfg/coco.data cfg/yolov4-tiny.cfg yolov4-tiny.weights traffic.mp4 -gpus 0
    ```
