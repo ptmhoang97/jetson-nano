@@ -3,8 +3,9 @@
 **1. Flash and boot:**\
 https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit
 
-**2. Install NoMachine:**
+**2. Install NoMachine on Jetson Nano:**
 ```
+sudo apt-get update
 wget https://download.nomachine.com/download/7.6/Arm/nomachine_7.6.2_3_arm64.deb
 sudo dpkg -i nomachine_7.6.2_3_arm64.deb
 ```
@@ -28,6 +29,7 @@ sudo vim /etc/X11/xorg.conf
 ```
 - Add these lines at the end of file:
 ```
+# Modify "Modes" and "Virtual" based on your monitor's resolution.
 Section "Screen"
 Identifier "Screen0"
 Monitor    "Monitor0"
@@ -39,9 +41,15 @@ Monitor    "Monitor0"
 EndSubSection
 EndSection
 ```
-- Modify "1920" and "1080" based on your monitor's resolution.
+```
+sudo reboot
+```
 
-**5. Save RAM:**
+**5. Install NoMachine on Window PC:**
+- Dowload NoMachine from https://www.nomachine.com/
+- Remote to Jetson Nano.
+
+**6. Save RAM:**
 ```
 # Check RAM before
 free -h
@@ -53,18 +61,13 @@ sudo dpkg-reconfigure lightdm
 free -h
 ```
 
-**6. Add swap memory:**
+**7. Install pip3:**
 ```
-# Check swap memory before
-free -h
+sudo apt-get -y install python3-pip
+```
 
-# Create swap memory
-sudo fallocate -l 4G /var/swapfile
-sudo chmod 600 /var/swapfile
-sudo mkswap /var/swapfile
-sudo swapon /var/swapfile
-sudo bash -c 'echo "/var/swapfile swap swap defaults 0 0" >> /etc/fstab'
-
-# Check swap memory after
-free -h
+**8. Install Jetson Stats:**
+```
+sudo -H pip install -U jetson-stats
+sudo jtop
 ```
