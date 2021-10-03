@@ -5,7 +5,12 @@
 **1. Setup for "main_video.py":**
 - Copy "main_video.py" in this repo to darknet folder.
 - Change path if necessary:\
-![image](https://user-images.githubusercontent.com/53186326/135756286-7ef5f070-7765-4e87-9398-775217329acb.png)
+```
+configPath = "./cfg/yolov4-tiny.cfg" 
+weightPath = "./yolov4-tiny.weights" 
+metaPath = "./cfg/coco.data"
+videoPath = "./traffic.mp4"
+```
 
 **2. Run model:**
 - Open terminal window at darknet folder and run command:\
