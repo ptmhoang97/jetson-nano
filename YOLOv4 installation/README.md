@@ -1,6 +1,6 @@
 # Install YOLOv4 on Jetson Nano
 - This document will guide how to install yolov4 and run with command ./darknet
-- This method is fixed to detect object only, we can run with custom model but can not modify code to add more feature.
+- This method is fixed to run with command so we can run with custom model and can not modify code to add more feature.
 
 **1. Clone lastest darknet code:**
 ```
