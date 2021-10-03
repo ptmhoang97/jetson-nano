@@ -76,6 +76,7 @@ def YOLO():
 	configPath = "./cfg/yolov4-tiny.cfg"                                 # Path to cfg
 	weightPath = "./yolov4-tiny.weights"                                 # Path to weights
 	metaPath = "./cfg/coco.data"                                    # Path to meta data
+	videoPath = "./traffic.mp4"
 	
 	if not os.path.exists(configPath):                              # Checks whether file exists otherwise return ValueError
 		raise ValueError("Invalid config path `" +
@@ -90,7 +91,7 @@ def YOLO():
 	network, class_names, class_colors = darknet.load_network(configPath,  metaPath, weightPath, batch_size=1)
 
 	#cap = cv2.VideoCapture(0)                                      # Uncomment to use Webcam
-	cap = cv2.VideoCapture("traffic.mp4")                             # Local Stored video detection - Set input video
+	cap = cv2.VideoCapture(videoPath)                             # Local Stored video detection - Set input video
 	frame_width = int(cap.get(3))                                   # Returns the width and height of capture video
 	frame_height = int(cap.get(4))
 	# Set out for video writer
