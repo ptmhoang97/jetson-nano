@@ -1,4 +1,6 @@
-# Install Yolo on Jetson Nano
+# Install YOLOv4 on Jetson Nano
+- This document will guide how to install yolov4 and run with command ./darknet
+- This method is fixed to detect object only, we can run with custom model but can not modify code to add more feature.
 
 **1. Clone lastest darknet code:**
 ```
@@ -39,19 +41,19 @@ source ~/.bashrc
 nvcc --version
 ```
 
-**3. Build code:**
+**4. Build code:**
 ```
 make
 ```
    - There will be file name "darknet" after finish.
 
-**4. Set Jetson Nano to maximum performance:**
+**5. Set Jetson Nano to maximum performance:**
 ```
 sudo nvpmodel -m 0
 sudo jetson_clocks
 ```
 
-**5. Dowload video on youtube:**
+**6. Dowload video on youtube:**
 ```
 sudo -H pip install --upgrade youtube-dl
 youtube-dl -F https://youtu.be/NcaGFp76BTY
@@ -63,7 +65,7 @@ youtube-dl -f 134 https://youtu.be/NcaGFp76BTY
 mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
 ```
 
-**5. Run model:**
+**7. Run model:**
    - Yolov4:
       - Preparation:
       ```
