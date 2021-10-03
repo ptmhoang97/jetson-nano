@@ -114,6 +114,7 @@ def YOLO():
 
 	print("Done")
 	cv2.imshow('Demo', image)                                    # Display Image window
+	cv2.imwrite("output_yolo.jpg", image)
 	cv2.waitKey()
 
 if __name__ == "__main__":  
