@@ -76,7 +76,7 @@ def YOLO():
 	configPath = "./cfg/yolov4-tiny.cfg"                                 # Path to cfg
 	weightPath = "./yolov4-tiny.weights"                                 # Path to weights
 	metaPath = "./cfg/coco.data"                                    # Path to meta data
-	image_path = "./data/dog.jpg"
+	imagePath = "./data/dog.jpg"
 	
 	if not os.path.exists(configPath):                              # Checks whether file exists otherwise return ValueError
 		raise ValueError("Invalid config path `" +
@@ -91,7 +91,7 @@ def YOLO():
 	network, class_names, class_colors = darknet.load_network(configPath,  metaPath, weightPath, batch_size=1)
 	
 	# Read image
-	frame_read = cv2.imread(image_path)
+	frame_read = cv2.imread(imagePath)
 	frame_height = frame_read.shape[0]
 	frame_width = frame_read.shape[1]
 
