@@ -96,7 +96,7 @@ def YOLO():
 	frame_height = int(cap.get(4))
 	# Set out for video writer
 	out = cv2.VideoWriter(                                          # Set the Output path for video writer
-		"output.mp4", cv2.VideoWriter_fourcc(*"MP4V"), 20.0,
+		"output_yolo.mp4", cv2.VideoWriter_fourcc(*"MP4V"), 20.0,
 		(frame_width, frame_height))
 
 	print("Starting the YOLO loop...")
