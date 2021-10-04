@@ -1,6 +1,9 @@
 # Setup Jetson Nano
 
-**1. Flash and boot:**\
+**1. Flash and boot:**
+- Dowload JetPack 4.5:
+https://developer.nvidia.com/jetson-nano-sd-card-image-45
+- And follow tutorial:
 https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit
 
 **2. Install NoMachine on Jetson Nano:**
