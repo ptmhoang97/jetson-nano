@@ -1,0 +1,33 @@
+CC=g++
+LD=ld
+CXXFLAGS=-Wall -std=c++11 -g -O
+
+NVCC=nvcc
+
+# space separated compute values ex: computes=70 75. If not present will fetch device's CC
+computes=
+
+ifeq ($(computes), )
+  computes= $(shell python gpu_cc.py)
+  $(info computes: $(computes))
+endif
+
+NVCCFLAGS= $(foreach compute, $(computes),-gencode arch=compute_$(compute),code=[sm_$(compute),compute_$(compute)])
+$(info NVCCFLAGS: $(NVCCFLAGS))
+
+# INCS and LIBS
+INCS=-I"/usr/local/cuda/include"
+LIBS=-L"/usr/local/cuda/lib64" -Wl,--start-group -lnvinfer -lnvparsers -lnvinfer_plugin -lcudnn -lcublas -lnvToolsExt -lcudart -lrt -ldl -lpthread -Wl,--end-group
+
+.PHONY: all clean
+
+all: libyolo_layer.so
+
+clean:
+	rm -f *.so *.o
+
+libyolo_layer.so: yolo_layer.o
+	$(CC) -shared -o $@ $< $(LIBS)
+
+yolo_layer.o: yolo_layer.cu yolo_layer.h
+	$(NVCC) -ccbin $(CC) $(INCS) $(NVCCFLAGS) -Xcompiler -fPIC -c -o $@ $<
