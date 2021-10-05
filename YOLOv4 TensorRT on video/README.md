@@ -8,9 +8,12 @@ pip3 install cython
 pip3 install pycuda
 ```
 5. Install onnx
-6. Make plugins
-7. Dowload weight and cfg
-8. YOLO to onnx
-9. onnx to trt 
-10. run model
-11. eval
+```
+pip3 install onnx=1.4.1
+```
+7. Make plugins
+8. Dowload weight and cfg
+9. YOLO to onnx
+10. onnx to trt 
+11. run model
+12. eval
