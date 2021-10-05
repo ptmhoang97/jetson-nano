@@ -14,35 +14,51 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda/lib64
 source ~/.bashrc
 nvcc --version
 ```
-3. Install pycuda
+**2. Install pycuda**
 ```
 pip3 install cython
 pip3 install pycuda
 ```
-5. Install onnx
+**3. Install onnx**
 ```
-pip3 install onnx=1.4.1
+sudo apt-get install libprotobuf-dev protobuf-compiler
+pip3 install onnx==1.4.1
 ```
-7. Make plugins
+**4. Make plugins**
 - Go to folder "plugins", run command below. When done, there will be files "libyolo_layer.so" and yolo_layer.o generated.
 ```
 make
 ```
-9. Dowload weight and cfg
+**5. Dowload weight and cfg**
+- Go to folder "yolo"
 ```
 ./dowload.sh
 ```
-11. YOLO to onnx
+**6. YOLO to ONNX**
 ```
-python3 yolo_to_onnx.py -m yolov4-416
+python3 yolo_to_onnx.py -m yolov4-tiny-416
 ```
-13. onnx to trt
+**7. ONNX to TensorRT**
 ```
-python3 onnx_to_tensorrt.py -m yolov4-416
+python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 ```
-15. run model
+**8. Run model**
+- Go folder "YOLOv4_TensorRT"
 ```
-python3 trt_yolo.py --image traffic.mp4 -m yolov4-416
-python3 trt_yolo.py --video traffic.mp4 -m yolov4-416
+python3 trt_yolo.py --image traffic.mp4 -m yolov4-tiny-416
+python3 trt_yolo.py --video traffic.mp4 -m yolov4-tiny-416
 ```
-17. eval
+**9. Eval model**
+```
+wget http://images.cocodataset.org/zips/val2017.zip
+wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+unzip val2017.zip
+unzip annotations_trainval2017.zip
+```
+```
+sudo pip3 install pycocotools
+sudo pip3 install progressbar2
+```
+```
+python3 eval_yolo.py -m yolov4-tiny-416
+```
