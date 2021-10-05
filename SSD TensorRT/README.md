@@ -28,3 +28,16 @@ pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compu
 ```
 ./build_engines.sh
 ```
+6. Run model
+- 
+8. Eval model
+```
+wget http://images.cocodataset.org/zips/val2017.zip
+wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+unzip val2017.zip
+unzip annotations_trainval2017.zip
+```
+```
+sudo pip3 install pycocotools
+sudo pip3 install progressbar2
+```
