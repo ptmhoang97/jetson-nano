@@ -77,3 +77,10 @@ sudo apt-get -y install python3-pip
 sudo -H pip3 install -U jetson-stats
 sudo jtop
 ```
+
+**9. Add swap memory:**\
+![image](https://user-images.githubusercontent.com/53186326/135964153-7ffc7388-b9d9-4a0c-a2b0-a86943be1383.png)
+
+**10. Boost clock:**\
+![image](https://user-images.githubusercontent.com/53186326/135964318-81784090-4c88-4637-a2f7-aae72a21f6b1.png)
+
