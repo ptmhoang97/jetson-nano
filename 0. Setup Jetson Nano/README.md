@@ -74,6 +74,6 @@ sudo apt-get -y install python3-pip
 
 **8. Install Jetson Stats:**
 ```
-sudo -H pip install -U jetson-stats
+sudo -H pip3 install -U jetson-stats
 sudo jtop
 ```
