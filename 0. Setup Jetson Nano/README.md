@@ -79,8 +79,8 @@ sudo jtop
 ```
 
 **9. Add swap memory:**\
-![image](https://user-images.githubusercontent.com/53186326/135964153-7ffc7388-b9d9-4a0c-a2b0-a86943be1383.png)
+![image](https://user-images.githubusercontent.com/53186326/135964552-8cd2d618-e49d-412f-b8b3-cc00ccbb1ce9.png)
 
 **10. Boost clock:**\
-![image](https://user-images.githubusercontent.com/53186326/135964318-81784090-4c88-4637-a2f7-aae72a21f6b1.png)
+![image](https://user-images.githubusercontent.com/53186326/135964578-93d3cc25-a118-49d4-aa53-bb19c828f758.png)
 
