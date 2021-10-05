@@ -28,11 +28,17 @@ pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compu
 ```
 ./build_engines.sh
 ```
+
 6. Run model
 ```
-python3 trt_yolo.py --image dog.jpg -m yolov4-416
-python3 trt_yolo.py --video traffic.mp4 -m yolov4-416
+python3 trt_ssd.py --image dog.jpg --model ssd_mobilenet_v1_coco
+python3 trt_ssd.py --video traffic.mp4 --model ssd_mobilenet_v1_coco
 ```
+```
+python3 trt_ssd_async.py --image dog.jpg --model ssd_mobilenet_v1_coco
+python3 trt_ssd_async.py --video traffic.mp4 --model ssd_mobilenet_v1_coco
+```
+
 8. Eval model
 ```
 wget http://images.cocodataset.org/zips/val2017.zip
@@ -45,5 +51,5 @@ sudo pip3 install pycocotools
 sudo pip3 install progressbar2
 ```
 ```
-python3 eval_yolo.py -m yolov4-tiny-416
+python3 eval_ssd.py -m ssd_mobilenet_v1_coco
 ```
