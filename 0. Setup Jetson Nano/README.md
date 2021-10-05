@@ -60,6 +60,9 @@ free -h
 # Switch to lightdm
 sudo dpkg-reconfigure lightdm
 
+# Reboot
+sudo reboot
+
 # Check RAM after
 free -h
 ```
