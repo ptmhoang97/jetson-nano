@@ -24,3 +24,7 @@ pip3 install -U numpy==1.19.4 future==0.18.2 mock==3.0.5 h5py==2.10.0 keras_prep
 pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v45 'tensorflow<2'
 ```
 **5. Build engine**
+- Go to folder "ssd":
+```
+./build_engines.sh
+```
