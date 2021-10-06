@@ -43,6 +43,7 @@ pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compu
 **Build engine**
 - Go to folder "ssd":
 ```
+sudo chmod +x build_engines.sh
 ./build_engines.sh
 ```
 
