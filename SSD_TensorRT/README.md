@@ -48,6 +48,7 @@ sudo chmod +x build_engines.sh
 ```
 
 **Run model**
+- Go to folder "SSD_TensorRT":
 ```
 python3 trt_ssd.py --image dog.jpg --model ssd_mobilenet_v1_coco
 python3 trt_ssd.py --video traffic.mp4 --model ssd_mobilenet_v1_coco
