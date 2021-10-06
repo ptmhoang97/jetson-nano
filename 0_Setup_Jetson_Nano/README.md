@@ -38,9 +38,9 @@ Identifier "Screen0"
 Monitor    "Monitor0"
     SubSection "Display"
     Viewport   0 0
-    Modes "1920x1080"
+    Modes "1366x768"
     Depth   24 
-    Virtual 1920 1080
+    Virtual 1366 768
 EndSubSection
 EndSection
 ```
