@@ -8,6 +8,11 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
+def _preprocess_tf(img, shape=(300, 300)):
+    """Preprocess an image before TensorFlow SSD inferencing."""
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(img, shape)
+    return img
 
 def _postprocess_tf(img, boxes, scores, classes, conf_th):
     """Postprocess TensorFlow SSD output."""
