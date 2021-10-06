@@ -26,7 +26,7 @@ sudo sed -i '88 a \ \ \ \ node.attr["dtype"].type = 1' /usr/lib/python3.6/dist-p
 sudo apt-get update
 ```
 ```
-sudo apt-get install libprotobuf-dev protobuf-compiler
+sudo apt-get -y install libprotobuf-dev protobuf-compiler
 ```
 ```
 sudo apt-get -y install libhdf5-serial-dev hdf5-tools libhdf5-dev zlib1g-dev zip libjpeg8-dev liblapack-dev libblas-dev gfortran
