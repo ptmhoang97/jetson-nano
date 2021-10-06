@@ -1,13 +1,27 @@
-**1. Install pycuda**
+
+**Set nvcc path:**
+```
+sudo gedit ~/.bashrc
+```
+```
+# Add these lines at the end of file.
+export PATH=${PATH}:/usr/local/cuda/bin
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda/lib64
+```
+```
+source ~/.bashrc
+nvcc --version
+```
+**Install pycuda**
 ```
 pip3 install cython
 pip3 install pycuda
 ```
-**2. Upgrade graphsurgeon.py**
+**Upgrade graphsurgeon.py**
 ```
 sudo sed -i '88 a \ \ \ \ node.attr["dtype"].type = 1' /usr/lib/python3.6/dist-packages/graphsurgeon/node_manipulation.py
 ```
-**3. Install TensorFlow:**
+**Install TensorFlow:**
 ```
 sudo apt-get update
 ```
@@ -26,13 +40,13 @@ pip3 install -U numpy==1.19.4 future==0.18.2 mock==3.0.5 h5py==2.10.0 keras_prep
 ```
 pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v45 'tensorflow<2'
 ```
-**5. Build engine**
+**Build engine**
 - Go to folder "ssd":
 ```
 ./build_engines.sh
 ```
 
-6. Run model
+**Run model**
 ```
 python3 trt_ssd.py --image dog.jpg --model ssd_mobilenet_v1_coco
 python3 trt_ssd.py --video traffic.mp4 --model ssd_mobilenet_v1_coco
@@ -42,7 +56,7 @@ python3 trt_ssd_async.py --image dog.jpg --model ssd_mobilenet_v1_coco
 python3 trt_ssd_async.py --video traffic.mp4 --model ssd_mobilenet_v1_coco
 ```
 
-8. Eval model
+**Eval model**
 ```
 wget http://images.cocodataset.org/zips/val2017.zip
 wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
