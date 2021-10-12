@@ -53,7 +53,7 @@ sudo jetson_clocks
 
 **6. Dowload video on youtube:**
 ```
-sudo -H pip install --upgrade youtube-dl
+sudo -H pip3 install --upgrade youtube-dl
 youtube-dl -F https://youtu.be/NcaGFp76BTY
 ```
 - It will show of list format, I choose format 134:\
