@@ -63,38 +63,146 @@ youtube-dl -f 134 https://youtu.be/NcaGFp76BTY
 mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
 ```
 
-**7. Run model with executable file:**
-   - Yolov4:
-      - Preparation:
-      ```
-      # Download weight:
-      wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4.weights -q --show-progress --no-clobber
+**7. Dowload weight:**
+```
+./dowload.sh
+```
 
-      # Create yolov4-416.cfg with width=416, height=416 from yolov4.cfg:
-      cat cfg/yolov4.cfg | sed -e '7s/width=608/width=416/' | sed -e '8s/height=608/height=416/' > cfg/yolov4-416.cfg
-      ```
+**7. Run model with executable file:**
+   - yolov4-416:
       - Test on image:
       ``` 
-      ./darknet detector test cfg/coco.data cfg/yolov4-416.cfg yolov4.weights data/dog.jpg -gpus 0
+      ./darknet detector test cfg/coco.data yolov4-416.cfg yolov4.weights data/dog.jpg -gpus 0
       ```
       - Test on video:
       ```
-      ./darknet detector demo cfg/coco.data cfg/yolov4-416.cfg yolov4.weights traffic.mp4 -gpus 0
+      ./darknet detector demo cfg/coco.data yolov4-416.cfg yolov4.weights traffic.mp4 -gpus 0
       ```
-   
-   - Yolov4-tiny:
-      - Preparation:
-      ```
-      # Download weight:
-      wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights -q --show-progress --no-clobber
-      ```
+   - yolov4-288:
       - Test on image:
       ``` 
-      ./darknet detector test cfg/coco.data cfg/yolov4-tiny.cfg yolov4-tiny.weights data/dog.jpg -gpus 0
+      ./darknet detector test cfg/coco.data yolov4-288.cfg yolov4.weights data/dog.jpg -gpus 0
       ```
       - Test on video:
       ```
-      ./darknet detector demo cfg/coco.data cfg/yolov4-tiny.cfg yolov4-tiny.weights traffic.mp4 -gpus 0
+      ./darknet detector demo cfg/coco.data yolov4-288.cfg yolov4.weights traffic.mp4 -gpus 0
+      ```
+   - yolov4-tiny-416:
+      - Test on image:
+      ``` 
+      ./darknet detector test cfg/coco.data yolov4-tiny-416.cfg yolov4-tiny.weights data/dog.jpg -gpus 0
+      ```
+      - Test on video:
+      ```
+      ./darknet detector demo cfg/coco.data yolov4-tiny-416.cfg yolov4-tiny.weights traffic.mp4 -gpus 0
+      ```
+   - yolov4-tiny-288:
+      - Test on image:
+      ``` 
+      ./darknet detector test cfg/coco.data yolov4-tiny-288.cfg yolov4-tiny.weights data/dog.jpg -gpus 0
+      ```
+      - Test on video:
+      ```
+      ./darknet detector demo cfg/coco.data yolov4-tiny-288.cfg yolov4-tiny.weights traffic.mp4 -gpus 0
       ```
 **7. Run model with python file:**
-   - Ima
+   - yolov4-416:
+     - Test on image:
+       - Change path in "main_image.py" if necessary:
+       ```
+       configPath = "./cfg/yolov4-416.cfg"
+       weightPath = "./yolov4-416.weights"
+       metaPath = "./cfg/coco.data"
+       imagePath = "./data/dog.jpg"
+       ```
+       - Run model:
+       ```
+       python3 main_image.py
+       ```
+     - Test on video:
+       - Change path in "main_video.py" if necessary:
+       ```
+       configPath = "./cfg/yolov4-416.cfg"
+       weightPath = "./yolov4-416.weights"
+       metaPath = "./cfg/coco.data"
+       videoPath = "./traffic.mp4"
+       ```
+       - Run model:
+       ```
+       python3 main_video.py
+       ```
+   - yolov4-288:
+     - Test on image:
+       - Change path in "main_image.py" if necessary:
+       ```
+       configPath = "./cfg/yolov4-288.cfg"
+       weightPath = "./yolov4-288.weights"
+       metaPath = "./cfg/coco.data"
+       imagePath = "./data/dog.jpg"
+       ```
+       - Run model:
+       ```
+       python3 main_image.py
+       ```
+     - Test on video:
+       - Change path in "main_video.py" if necessary:
+       ```
+       configPath = "./cfg/yolov4-288.cfg"
+       weightPath = "./yolov4-288.weights"
+       metaPath = "./cfg/coco.data"
+       videoPath = "./traffic.mp4"
+       ```
+       - Run model:
+       ```
+       python3 main_video.py
+       ```
+   - yolov4-tiny-416:
+     - Test on image:
+       - Change path in "main_image.py" if necessary:\
+       ```
+       configPath = "./cfg/yolov4-tiny-416.cfg"
+       weightPath = "./yolov4-tiny-416.weights"
+       metaPath = "./cfg/coco.data"
+       imagePath = "./data/dog.jpg"
+       ```
+       - Run model:
+       ```
+       python3 main_image.py
+       ```
+     - Test on video:
+       - Change path in "main_video.py" if necessary:
+       ```
+       configPath = "./cfg/yolov4-tiny-416.cfg"
+       weightPath = "./yolov4-tiny-416.weights"
+       metaPath = "./cfg/coco.data"
+       videoPath = "./traffic.mp4"
+       ```
+       - Run model:
+       ```
+       python3 main_video.py
+       ```
+   - yolov4-tiny-288:
+     - Test on image:
+       - Change path in "main_image.py" if necessary:\
+       ```
+       configPath = "./cfg/yolov4-tiny-288.cfg"
+       weightPath = "./yolov4-tiny-288.weights"
+       metaPath = "./cfg/coco.data"
+       imagePath = "./data/dog.jpg"
+       ```
+       - Run model:
+       ```
+       python3 main_image.py
+       ```
+     - Test on video:
+       - Change path in "main_video.py" if necessary:
+       ```
+       configPath = "./cfg/yolov4-tiny-288.cfg"
+       weightPath = "./yolov4-tiny-288.weights"
+       metaPath = "./cfg/coco.data"
+       videoPath = "./traffic.mp4"
+       ```
+       - Run model:
+       ```
+       python3 main_video.py
+       ```
