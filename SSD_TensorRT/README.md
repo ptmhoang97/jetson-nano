@@ -58,7 +58,7 @@ python3 trt_ssd_async.py --image dog.jpg --model ssd_mobilenet_v1_coco
 python3 trt_ssd_async.py --video traffic.mp4 --model ssd_mobilenet_v1_coco
 ```
 
-**Eval model**
+**Eval model with COCO**
 ```
 wget http://images.cocodataset.org/zips/val2017.zip
 wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
