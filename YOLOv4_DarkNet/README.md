@@ -63,7 +63,7 @@ youtube-dl -f 134 https://youtu.be/NcaGFp76BTY
 mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
 ```
 
-**7. Run model:**
+**7. Run model with executable file:**
    - Yolov4:
       - Preparation:
       ```
