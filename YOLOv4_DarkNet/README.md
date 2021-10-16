@@ -1,11 +1,11 @@
 # Install YOLOv4 on Jetson Nano
 
-**1. Clone lastest darknet code:**
+**Clone lastest darknet code:**
 ```
 git clone https://github.com/AlexeyAB/darknet.git
 cd darknet
 ```
-**2. Modify "Makefile":**
+**Modify "Makefile":**
 ```
 GPU=1
 CUDNN=1
@@ -25,7 +25,7 @@ DEBUG=0
 ARCH= -gencode arch=compute_53,code=[sm_53,compute_53]
 ```
 
-**3. Set nvcc path:**
+**Set nvcc path:**
 ```
 sudo gedit ~/.bashrc
 ```
@@ -39,19 +39,19 @@ source ~/.bashrc
 nvcc --version
 ```
 
-**4. Build code:**
+**Build code:**
 ```
 make
 ```
    - There will be file name "darknet" after finish.
 
-**5. Set Jetson Nano to maximum performance:**
+**Set Jetson Nano to maximum performance:**
 ```
 sudo nvpmodel -m 0
 sudo jetson_clocks
 ```
 
-**6. Dowload video on youtube:**
+**Dowload video on youtube:**
 ```
 sudo -H pip3 install --upgrade youtube-dl
 youtube-dl -F https://youtu.be/NcaGFp76BTY
@@ -63,12 +63,12 @@ youtube-dl -f 134 https://youtu.be/NcaGFp76BTY
 mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
 ```
 
-**7. Dowload weight:**
+**Dowload weight:**
 ```
 ./dowload.sh
 ```
 
-**7. Run model with executable file:**
+**Run model with executable file:**
    - yolov4-416:
       - Test on image:
       ``` 
@@ -105,7 +105,7 @@ mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
       ```
       ./darknet detector demo cfg/coco.data yolov4-tiny-288.cfg yolov4-tiny.weights traffic.mp4 -gpus 0
       ```
-**7. Run model with python file:**
+**Run model with python file:**
    - yolov4-416:
      - Test on image:
        - Change path in "main_image.py" if necessary:
