@@ -96,3 +96,5 @@ mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
       ```
       ./darknet detector demo cfg/coco.data cfg/yolov4-tiny.cfg yolov4-tiny.weights traffic.mp4 -gpus 0
       ```
+**7. Run model with python file:**
+   - Ima
