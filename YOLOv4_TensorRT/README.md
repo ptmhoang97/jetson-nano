@@ -1,7 +1,7 @@
 # YOLOv4 TensorRT
 
 
-**1. Set nvcc path:**
+**Set nvcc path:**
 ```
 sudo gedit ~/.bashrc
 ```
@@ -14,41 +14,41 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda/lib64
 source ~/.bashrc
 nvcc --version
 ```
-**2. Install pycuda**
+**Install pycuda**
 ```
 pip3 install cython
 pip3 install pycuda
 ```
-**3. Install onnx**
+**Install onnx**
 ```
 sudo apt-get install libprotobuf-dev protobuf-compiler
 pip3 install onnx==1.4.1
 ```
-**4. Make plugins**
+**Make plugins**
 - Go to folder "plugins", run command below. When done, there will be files "libyolo_layer.so" and yolo_layer.o generated.
 ```
 make
 ```
-**5. Dowload weight and cfg**
+**Dowload weight and cfg**
 - Go to folder "yolo"
 ```
 ./dowload.sh
 ```
-**6. YOLO to ONNX**
+**YOLO to ONNX**
 ```
 python3 yolo_to_onnx.py -m yolov4-tiny-416
 ```
-**7. ONNX to TensorRT**
+**ONNX to TensorRT**
 ```
 python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 ```
-**8. Run model**
+**Run model**
 - Go folder "YOLOv4_TensorRT"
 ```
 python3 trt_yolo.py --image dog.jpg -m yolov4-tiny-416
 python3 trt_yolo.py --video traffic.mp4 -m yolov4-tiny-416
 ```
-**9. Eval model**
+**Eval model with COCO**
 ```
 wget http://images.cocodataset.org/zips/val2017.zip
 wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
