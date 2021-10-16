@@ -1,10 +1,10 @@
 # How to use?
 ## Step 1
-### Follow these folders first:
-0. Setup Jetson Nano
-1. YOLOv4 installation
+- Follow folder **_Setup Jetson Nano** first.
 
 ## Step 2
-### These folders can run separately:
-2. YOLOv4 object detection on image
-3. YOLOv4 object detection on video
+- SSD:
+  - Run model SSD with framework TensorRT => Follow folder **SSD_TensorRT**
+- YOLOv4:
+  - Run model YOLOv4 with framework Darknet => Follow folder **YOLOv4_Darknet**
+  - Run model YOLOv4 with framework TensorRT => Follow folder **YOLOv4_TensorRT**
