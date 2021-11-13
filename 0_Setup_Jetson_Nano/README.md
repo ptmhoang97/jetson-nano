@@ -84,3 +84,19 @@ sudo jtop
 **10. Boost clock:**\
 ![image](https://user-images.githubusercontent.com/53186326/135964578-93d3cc25-a118-49d4-aa53-bb19c828f758.png)
 
+**11. Create shortcut key for LXTerminal:**
+- Use vim to open lxde-rc.xml:
+<!---->
+    sudo vim cd ~/.config/openbox/lxde-rc.xml  
+- Type "/keyboard" and press "Enter" for searching tag \<keyboard\>  .
+- Press "i" for edit, copy below code to position which inside tag \<keyboard\>:  
+<!-- Launch LXTerminal with Ctrl+Alt+t-->
+    <keybind key="C-A-t">
+      <action name="Execute">
+        <command>lxterminal</command>
+      </action>
+    </keybind>
+- Press "Esc" for stopping edit.
+- Type ":wq" for quit and save file.
+- sudo reboot ( After login, use command "Ctrl+Atl+t" to open LXTerminal).
+
