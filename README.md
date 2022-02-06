@@ -1,4 +1,8 @@
 # How to use?
+
+## Setup:
+git clone https://github.com/ptmhoang97/jetson-nano.git
+
 ## Step 1
 - Follow folder **0_Setup Jetson Nano** first.
 
