@@ -32,6 +32,7 @@ make
 **Dowload weight and cfg**
 - Go to folder "yolo"
 ```
+chmod u+x dowload.sh
 ./dowload.sh
 ```
 **YOLO to ONNX**
