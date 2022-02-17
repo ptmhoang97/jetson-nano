@@ -65,6 +65,8 @@ mv "Road traffic video for object recognition-NcaGFp76BTY.mp4" "traffic.mp4"
 
 **Dowload weight:**
 ```
+cd ..
+chmod u+x dowload.sh
 ./dowload.sh
 ```
 
