@@ -36,10 +36,12 @@ chmod u+x dowload.sh
 ./dowload.sh
 ```
 **YOLO to ONNX**
+- Stay in cmd window of folder "yolo" and run command below:
 ```
 python3 yolo_to_onnx.py -m yolov4-tiny-416
 ```
 **ONNX to TensorRT**
+- Stay in cmd window of folder "yolo" and run command below:
 ```
 python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 ```
