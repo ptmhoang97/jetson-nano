@@ -65,3 +65,11 @@ sudo pip3 install progressbar2
 ```
 python3 eval_yolo.py -m yolov4-tiny-416
 ```
+**Note**
+- You can change "yolov4-tiny-416" to another model. Here is list of model:
+yolov4
+yolov4-288
+yolov4-416
+yolov4-tiny
+yolov4-tiny-288
+yolov4-tiny-416
