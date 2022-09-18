@@ -30,7 +30,7 @@ pip3 install onnx==1.4.1
 make
 ```
 **Dowload weight and cfg**
-- Go to folder "yolo"
+- Go to folder "yolo", open cmd window and run command below:
 ```
 chmod u+x dowload.sh
 ./dowload.sh
@@ -44,7 +44,7 @@ python3 yolo_to_onnx.py -m yolov4-tiny-416
 python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 ```
 **Run model**
-- Go folder "YOLOv4_TensorRT"
+- Go folder "YOLOv4_TensorRT", open cmd window and run command below:
 ```
 python3 trt_yolo.py --image dog.jpg -m yolov4-tiny-416
 python3 trt_yolo.py --video video1.mp4 -m yolov4-tiny-416
