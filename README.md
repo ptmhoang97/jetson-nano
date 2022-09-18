@@ -13,4 +13,4 @@ git clone https://github.com/ptmhoang97/jetson-nano.git
   - Run model SSD with framework TensorRT => Follow folder **1_SSD_TensorRT**
 - YOLOv4:
   - Run model YOLOv4 with framework Darknet => Follow folder **2_YOLOv4_Darknet**
-  - Run model YOLOv4 with framework TensorRT => Follow folder **3_YOLOv4_TensorRT**
+  - Run model YOLOv4 with framework TensorRT => Follow folder **3_YOLOv4_TensorRT** (I recommend this due to high FPS)
