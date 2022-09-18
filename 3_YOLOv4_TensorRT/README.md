@@ -25,7 +25,7 @@ sudo apt-get install libprotobuf-dev protobuf-compiler
 pip3 install onnx==1.4.1
 ```
 **Make plugins (start from here if clone new repo and already run this before)**
-- Go to folder "plugins", run command below. When done, there will be files "libyolo_layer.so" and yolo_layer.o generated.
+- Go to folder "plugins", open cmd window and run command below. When done, there will be files "libyolo_layer.so" and yolo_layer.o generated.
 ```
 make
 ```
