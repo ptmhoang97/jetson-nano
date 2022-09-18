@@ -17,7 +17,7 @@ from utils.camera import add_camera_args, Camera
 from utils.display import open_window, set_display, show_fps
 from utils.visualization import BBoxVisualization
 from utils.yolo_with_plugins import TrtYOLO
-
+from utils.lane_detection import lane_detection
 
 WINDOW_NAME = 'TrtYOLODemo'
 
@@ -45,7 +45,7 @@ def parse_args():
     return args
 
 
-def loop_and_detect(cam, trt_yolo, conf_th, vis):
+def loop_and_detect(cam, trt_yolo, conf_th, vis, vid_name):
     """Continuously capture images from camera and do object detection.
 
     # Arguments
@@ -64,6 +64,8 @@ def loop_and_detect(cam, trt_yolo, conf_th, vis):
         if img is None:
             break
         boxes, confs, clss = trt_yolo.detect(img, conf_th)
+        # lane detection
+        averaged_lines, img = lane_detection(img,vid_name)
         img = vis.draw_bboxes(img, boxes, confs, clss)
         img = show_fps(img, fps)
         cv2.imshow(WINDOW_NAME, img)
@@ -75,6 +77,11 @@ def loop_and_detect(cam, trt_yolo, conf_th, vis):
         key = cv2.waitKey(1)
         if key == 27:  # ESC key: quit program
             break
+        elif key == ord('e'):
+            while True:
+                key = cv2.waitKey(1)
+                if key == ord('r'):
+                    break
         elif key == ord('F') or key == ord('f'):  # Toggle fullscreen
             full_scrn = not full_scrn
             set_display(WINDOW_NAME, full_scrn)
@@ -91,6 +98,8 @@ def main():
     if not cam.isOpened():
         raise SystemExit('ERROR: failed to open camera!')
 
+    video_name = args.video
+    
     cls_dict = get_cls_dict(args.category_num)
     vis = BBoxVisualization(cls_dict)
     trt_yolo = TrtYOLO(args.model, args.category_num, args.letter_box)
@@ -98,7 +107,7 @@ def main():
     open_window(
         WINDOW_NAME, 'Camera TensorRT YOLO Demo',
         cam.img_width, cam.img_height)
-    loop_and_detect(cam, trt_yolo, conf_th=0.3, vis=vis)
+    loop_and_detect(cam, trt_yolo, conf_th=0.3, vis=vis, vid_name = video_name)
 
     cam.release()
     cv2.destroyAllWindows()
