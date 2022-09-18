@@ -47,7 +47,7 @@ python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 - Go folder "YOLOv4_TensorRT"
 ```
 python3 trt_yolo.py --image dog.jpg -m yolov4-tiny-416
-python3 trt_yolo.py --video traffic.mp4 -m yolov4-tiny-416
+python3 trt_yolo.py --video video1.mp4 -m yolov4-tiny-416
 ```
 **Eval model with COCO**
 ```
