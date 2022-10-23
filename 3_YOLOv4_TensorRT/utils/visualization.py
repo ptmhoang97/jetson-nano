@@ -76,6 +76,32 @@ def draw_boxed_text(img, text, topleft, color):
     cv2.addWeighted(patch[0:h, 0:w, :], ALPHA, roi, 1 - ALPHA, 0, roi)
     return img
 
+def get_info_from_tracker(tracker_elements_draw):
+    tracker_id = []
+    boxes = []
+    confs = []
+    clss = []
+    change_lane_flg = []
+    for ele in tracker_elements_draw:
+        tracker_id.append(ele[0])
+        box_tmp = [0,0,0,0]
+        x = ele[1][0]
+        y = ele[1][1]
+        w = ele[1][2]
+        h = ele[1][3]
+        x1 = x
+        y1 = y
+        x2 = x + w
+        y2 = y + h
+        box_tmp[0] = int(x1)
+        box_tmp[1] = int(y1)
+        box_tmp[2] = int(x2)
+        box_tmp[3] = int(y2)
+        boxes.append(box_tmp)
+        confs.append(ele[2])
+        clss.append(ele[3])
+        change_lane_flg.append(ele[4])
+    return tracker_id, boxes, confs, clss, change_lane_flg
 
 class BBoxVisualization():
     """BBoxVisualization class implements nice drawing of boudning boxes.
@@ -88,13 +114,18 @@ class BBoxVisualization():
         self.cls_dict = cls_dict
         self.colors = gen_colors(len(cls_dict))
 
-    def draw_bboxes(self, img, boxes, confs, clss):
+    def draw_bboxes(self, img, tracker_elements_draw):
+        tracker_id, boxes, confs, clss, change_lane_flg = get_info_from_tracker(tracker_elements_draw)
         """Draw detected bounding boxes on the original image."""
-        for bb, cf, cl in zip(boxes, confs, clss):
+        for trk_id, bb, cf, cl, chg_lane_flg in zip(tracker_id, boxes, confs, clss, change_lane_flg):
             cl = int(cl)
             x_min, y_min, x_max, y_max = bb[0], bb[1], bb[2], bb[3]
             color = self.colors[cl]
             cv2.rectangle(img, (x_min, y_min), (x_max, y_max), color, 2)
+            cv2.circle(img, (int((x_min+x_max)/2), int((y_min+y_max)/2)), 4, (0, 255, 0), -1)
+            cv2.putText(img, str(trk_id), (int((x_min+x_max)/2), int((y_min+y_max)/2)), 0, 1, (0, 0, 255), 2)
+            if chg_lane_flg is True:
+                cv2.putText(img, "change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
             txt_loc = (max(x_min+2, 0), max(y_min+2, 0))
             cls_name = self.cls_dict.get(cl, 'CLS{}'.format(cl))
             txt = '{} {:.2f}'.format(cls_name, cf)

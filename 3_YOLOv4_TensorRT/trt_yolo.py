@@ -18,6 +18,8 @@ from utils.display import open_window, set_display, show_fps
 from utils.visualization import BBoxVisualization
 from utils.yolo_with_plugins import TrtYOLO
 from utils.lane_detection import lane_detection
+from utils.vehicle_detect_and_track import vehicle_detect_and_track
+from utils.track_vehicle_change_lane import track_vehicle_change_lane
 
 WINDOW_NAME = 'TrtYOLODemo'
 
@@ -43,9 +45,8 @@ def parse_args():
         help='inference with letterboxed image [False]')
     args = parser.parse_args()
     return args
-
-
-def loop_and_detect(cam, trt_yolo, conf_th, vis, vid_name):
+    
+def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
     """Continuously capture images from camera and do object detection.
 
     # Arguments
@@ -57,36 +58,79 @@ def loop_and_detect(cam, trt_yolo, conf_th, vis, vid_name):
     full_scrn = False
     fps = 0.0
     tic = time.time()
+    
+    frame_count = 0
     while True:
         if cv2.getWindowProperty(WINDOW_NAME, 0) < 0:
             break
         img = cam.read()
+        
         if img is None:
             break
-        boxes, confs, clss = trt_yolo.detect(img, conf_th)
-        # lane detection
-        averaged_lines, img = lane_detection(img,vid_name)
-        img = vis.draw_bboxes(img, boxes, confs, clss)
+
+        img_copy = img.copy()
+        
+        # Frame counter
+        frame_count+=1
+
+        # Vehicle detection and tracking
+        tracker_elements = vehicle_detect_and_track(trt_yolo, img_copy, conf_th, frame_count)
+        
+        # Track vehicle change lane
+        tracker_change_lane = track_vehicle_change_lane(vid_name, img_copy, tracker_elements, frame_count)
+
+        # lane detection and display lane
+        averaged_lines, img = lane_detection(img)
+        
+        # Display properties of vehicle (bounding box, changing lane status, track id)
+        if len(tracker_elements) != 0:
+            tracker_elements_draw = []
+            # Prepare input data for display function
+            for ele in tracker_elements:
+                temp = []
+                trk_id = ele[0]
+                boxes = ele[1]
+                confs = ele[2]
+                clss = ele[3]
+                temp.append(trk_id)
+                temp.append(boxes)
+                temp.append(confs)
+                temp.append(clss)
+                # If tracked any vehicle before
+                if len(tracker_change_lane) != 0:
+                    # And if old vehicle still exist (keep being tracked),
+                    # we will display chaning lane status. If not, vice versa.
+                    for ele_2 in tracker_change_lane:
+                        if trk_id == ele_2['tracker_id']:
+                            temp.append(ele_2['change_lane_flg'])
+                        else:
+                            temp.append(False)
+                else:
+                    temp.append(False)
+                tracker_elements_draw.append(temp)
+            img = vis.draw_bboxes(img, tracker_elements_draw)
+
+        # display fps
         img = show_fps(img, fps)
+        
         cv2.imshow(WINDOW_NAME, img)
+        
+        # calculate fps
         toc = time.time()
         curr_fps = 1.0 / (toc - tic)
-        # calculate an exponentially decaying average of fps number
         fps = curr_fps if fps == 0.0 else (fps*0.95 + curr_fps*0.05)
         tic = toc
+                    
+        # keyboard check
         key = cv2.waitKey(1)
         if key == 27:  # ESC key: quit program
             break
-        elif key == ord('e'):
+        elif key == ord('e'): # e key: pause program
             while True:
                 key = cv2.waitKey(1)
-                if key == ord('r'):
+                if key == ord('r'): # r key: resume program
                     break
-        elif key == ord('F') or key == ord('f'):  # Toggle fullscreen
-            full_scrn = not full_scrn
-            set_display(WINDOW_NAME, full_scrn)
-
-
+        
 def main():
     args = parse_args()
     if args.category_num <= 0:
@@ -97,8 +141,6 @@ def main():
     cam = Camera(args)
     if not cam.isOpened():
         raise SystemExit('ERROR: failed to open camera!')
-
-    video_name = args.video
     
     cls_dict = get_cls_dict(args.category_num)
     vis = BBoxVisualization(cls_dict)
@@ -107,7 +149,7 @@ def main():
     open_window(
         WINDOW_NAME, 'Camera TensorRT YOLO Demo',
         cam.img_width, cam.img_height)
-    loop_and_detect(cam, trt_yolo, conf_th=0.3, vis=vis, vid_name = video_name)
+    loop_detect_and_track(cam, trt_yolo, conf_th=0.3, vis=vis, vid_name = args.video)
 
     cam.release()
     cv2.destroyAllWindows()
