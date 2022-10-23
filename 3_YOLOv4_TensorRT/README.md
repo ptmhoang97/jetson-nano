@@ -1,6 +1,6 @@
 # YOLOv4 TensorRT
 
-Hint: Start from "Make plugins" below if you re-clone new repo (Make sure you already finished 0_Setup_Jetson_Nano before).
+Hint: Start from "Make plugins" below if you re-clone new repo (make sure you already finished 0_Setup_Jetson_Nano before).
 
 **Set nvcc path:**
 ```
