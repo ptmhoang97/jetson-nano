@@ -19,6 +19,17 @@ def get_x_top_center_region_detect_lane(img):
     region_x_top_right_point = region_of_lane_line[0][2][0]
     region_x_top_center_point = int((region_x_top_left_point+region_x_top_right_point)/2)
     return region_x_top_center_point
+
+def get_x_y_bot_center_region_detect_lane(img):
+    region_of_lane_line = region_detect_lane(img)
+    region_of_lane_line = region_of_lane_line.tolist()
+    region_x_bot_left_point = region_of_lane_line[0][0][0]
+    region_x_bot_right_point = region_of_lane_line[0][3][0]
+    region_x_bot_center_point = int((region_x_bot_left_point+region_x_bot_right_point)/2)
+    region_y_bot_left_point = region_of_lane_line[0][0][1]
+    region_y_bot_right_point = region_of_lane_line[0][3][1]
+    region_y_bot_center_point = int((region_y_bot_left_point+region_y_bot_right_point)/2)
+    return region_x_bot_center_point,region_y_bot_center_point
     
 def region_detect_lane(img):
     height = img.shape[0]

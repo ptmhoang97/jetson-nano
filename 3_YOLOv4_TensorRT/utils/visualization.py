@@ -82,27 +82,21 @@ def get_info_from_tracker(tracker_elements_draw):
     confs = []
     clss = []
     change_lane_flg = []
+    distance_driver = []
+    distance_driver_loc = []
+    coordinate_vehicle_and_driver = []
     for ele in tracker_elements_draw:
         tracker_id.append(ele[0])
-        box_tmp = [0,0,0,0]
-        x = ele[1][0]
-        y = ele[1][1]
-        w = ele[1][2]
-        h = ele[1][3]
-        x1 = x
-        y1 = y
-        x2 = x + w
-        y2 = y + h
-        box_tmp[0] = int(x1)
-        box_tmp[1] = int(y1)
-        box_tmp[2] = int(x2)
-        box_tmp[3] = int(y2)
-        boxes.append(box_tmp)
+        boxes.append(ele[1])
         confs.append(ele[2])
         clss.append(ele[3])
         change_lane_flg.append(ele[4])
-    return tracker_id, boxes, confs, clss, change_lane_flg
+        distance_driver.append(ele[5])
+        distance_driver_loc.append(ele[6])
+        coordinate_vehicle_and_driver.append(ele[7])
+    return tracker_id, boxes, confs, clss, change_lane_flg, distance_driver, distance_driver_loc, coordinate_vehicle_and_driver
 
+count_alert = 0
 class BBoxVisualization():
     """BBoxVisualization class implements nice drawing of boudning boxes.
 
@@ -115,17 +109,46 @@ class BBoxVisualization():
         self.colors = gen_colors(len(cls_dict))
 
     def draw_bboxes(self, img, tracker_elements_draw):
-        tracker_id, boxes, confs, clss, change_lane_flg = get_info_from_tracker(tracker_elements_draw)
+        global count_alert
+        count_alert += 1
+        if count_alert%2 == 0:
+            scale_add_weighted = 0.5
+        else:
+            scale_add_weighted = 0.8
+            
+        tracker_id, boxes, confs, clss, change_lane_flg, \
+            distance_driver, distance_driver_loc, coordinate_vehicle_and_driver = get_info_from_tracker(tracker_elements_draw)
         """Draw detected bounding boxes on the original image."""
-        for trk_id, bb, cf, cl, chg_lane_flg in zip(tracker_id, boxes, confs, clss, change_lane_flg):
+        for trk_id, bb, cf, cl, chg_lane_flg, dis_driver, dis_driver_loc, coor_veh_driver \
+                                            in zip(tracker_id, boxes, confs, clss, change_lane_flg, \
+                                                   distance_driver, distance_driver_loc, coordinate_vehicle_and_driver):
             cl = int(cl)
             x_min, y_min, x_max, y_max = bb[0], bb[1], bb[2], bb[3]
             color = self.colors[cl]
             cv2.rectangle(img, (x_min, y_min), (x_max, y_max), color, 2)
             cv2.circle(img, (int((x_min+x_max)/2), int((y_min+y_max)/2)), 4, (0, 255, 0), -1)
             cv2.putText(img, str(trk_id), (int((x_min+x_max)/2), int((y_min+y_max)/2)), 0, 1, (0, 0, 255), 2)
-            if chg_lane_flg is True:
-                cv2.putText(img, "change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
+            
+            if chg_lane_flg is not False:
+                # Make bounding box of vehicle changing lane flash (bling bling)
+                mask = np.zeros_like(img)
+                region_vehicle = np.array([[(x_min, y_max),
+                                            (x_min, y_min),
+                                            (x_max, y_min),
+                                            (x_max, y_max),]], np.int32)
+                cv2.fillPoly(mask, region_vehicle, (255,0,255))
+                img = cv2.addWeighted(img, 1, mask, scale_add_weighted, 1)
+                
+                # Show ID vehicle which is changing lane
+                cv2.putText(img, str(trk_id) + "change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
+
+            if dis_driver is not None:
+                # Draw a line from driver to vehicle in front
+                img = cv2.line(img, (coor_veh_driver[0],coor_veh_driver[1]),\
+                                    (coor_veh_driver[2],coor_veh_driver[3]), color, 2)
+                # Draw box mention distance between driver and vehicle in front
+                img = draw_boxed_text(img, str(dis_driver) + "m", (dis_driver_loc[0]+10,dis_driver_loc[1]), (0,0,0))
+                
             txt_loc = (max(x_min+2, 0), max(y_min+2, 0))
             cls_name = self.cls_dict.get(cl, 'CLS{}'.format(cl))
             txt = '{} {:.2f}'.format(cls_name, cf)

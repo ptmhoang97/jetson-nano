@@ -37,48 +37,46 @@ def track_vehicle_change_lane(vid_name, img, tracker_elements, frame_count):
     if len(tracker_change_lane) == 0:
         # Proceed storing properties for first time
         for trk_id, dist, bb, cf, cl in zip(tracker_id, distance, boxes, confs, clss):
-            # If distance between center of vehicle bounding box and center of lane < 5 pixel,
-            # we will not track that vehicle.
-            if dist < 50:
-                pass
             # Start tracking this vehicle
+            temp_dict = dict()
+            temp_dict['tracker_id'] = trk_id
+            temp_dict['distance'] = dist
+            temp_dict['change_lane_counter'] = 0
+            temp_dict['no_change_lane_counter'] = 0
+            temp_dict['frame_exist_vehicle'] = frame_count
+            temp_dict['change_lane_flg'] = False
+            # If distance between center of vehicle bounding box and center of lane < xx pixel,
+            # vehicle is inside lane. If not, vice versa.
+            if dist < 20:
+                temp_dict['inside_lane_flg'] = True
             else:
-                temp_dict = dict()
-                temp_dict['tracker_id'] = trk_id
-                temp_dict['distance'] = dist
-                temp_dict['change_lane_counter'] = 0
-                temp_dict['no_change_lane_counter'] = 0
-                temp_dict['frame_exist_vehicle'] = frame_count
-                temp_dict['change_lane_flg'] = False
                 temp_dict['inside_lane_flg'] = False
-                temp_dict['boxes'] = bb
-                temp_dict['confs'] = cf
-                temp_dict['clss'] = cl
-                tracker_change_lane.append(temp_dict)
+            temp_dict['boxes'] = bb
+            temp_dict['confs'] = cf
+            temp_dict['clss'] = cl
+            tracker_change_lane.append(temp_dict)
                 
     # Tracking vehicle after the first time
     else:
         # Loop current vehicle list
         for trk_id, dist, bb, cf, cl in zip(tracker_id, distance, boxes, confs, clss):
             trk_id_match_flg = False
+
             # Loop old vehicle list
             for idx,ele in enumerate(tracker_change_lane):
                 # If current vehicle match old vehicle (that mean same vehicle)
                 if trk_id == ele['tracker_id']:
                     trk_id_match_flg = True
                     
-                    # If distance between center of vehicle bounding box and center of lane < 5 pixel,
-                    # we will not track that vehicle.
-                    if dist < 5:
+                    # If distance between center of vehicle bounding box and center of lane < 20 pixel,
+                    # vehicle is inside lane. If not, vice versa.
+                    if dist < 20:
                         ele['inside_lane_flg'] = True
-                    
-                    # Remove vehicle which inside lane from old vehicle and start checking another vehicle
-                    if ele['inside_lane_flg'] == True:
-                        tracker_change_lane.pop(idx)
-                        break
+                    else:
+                        ele['inside_lane_flg'] = False
                         
                     # If vehicle getting closer to the lane, we will increase counter changing lane.
-                    if dist < ele['distance']:
+                    if ele['distance']-dist > 4:
                         ele['change_lane_counter'] += 1
                     # If not, we will increase counter no changing lane.
                     else:
@@ -89,18 +87,28 @@ def track_vehicle_change_lane(vid_name, img, tracker_elements, frame_count):
                     
                     # If vehicle not changing lane
                     if ele['change_lane_flg'] is False:
-                        # And chaning lane counter >= 10,
+                        if frame_count%50 == 0:
+                            ele['change_lane_counter'] = ele['change_lane_counter'] - 1
+                        # And chaning lane counter >= xx,
                         # reset no changing lane counter and set flag changing lane for vehicle
                         if ele['change_lane_counter'] >= 10:
                             ele['no_change_lane_counter'] = 0
                             ele['change_lane_flg'] = True
                     # If vehicle changing lane
                     else:
-                        # And no chaning lane counter >= 10,
+                        if frame_count%50 == 0:
+                            ele['no_change_lane_counter'] = ele['no_change_lane_counter'] - 1
+                        # And no chaning lane counter >= xx,
                         # reset changing lane counter and set flag no changing lane for vehicle
-                        if ele['no_change_lane_counter'] >= 10:
+                        if ele['no_change_lane_counter'] >= 40:
                             ele['change_lane_counter'] = 0
                             ele['change_lane_flg'] = False
+                    
+                    # Only checking changing lane when vehicle out lane line
+                    if ele['inside_lane_flg'] is True:
+                        ele['no_change_lane_counter'] = 0
+                        ele['change_lane_counter'] = 0
+                        ele['change_lane_flg'] = False
                     
                     # Store frame number exist this vehicle
                     ele['frame_exist_vehicle'] = frame_count
@@ -123,7 +131,10 @@ def track_vehicle_change_lane(vid_name, img, tracker_elements, frame_count):
                 temp_dict['no_change_lane_counter'] = 0
                 temp_dict['frame_exist_vehicle'] = frame_count
                 temp_dict['change_lane_flg'] = False
-                temp_dict['inside_lane_flg'] = False
+                if dist < 20:
+                    temp_dict['inside_lane_flg'] = True
+                else:
+                    temp_dict['inside_lane_flg'] = False
                 temp_dict['boxes'] = bb
                 temp_dict['confs'] = cf
                 temp_dict['clss'] = cl

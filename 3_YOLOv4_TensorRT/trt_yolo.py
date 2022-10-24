@@ -20,6 +20,8 @@ from utils.yolo_with_plugins import TrtYOLO
 from utils.lane_detection import lane_detection
 from utils.vehicle_detect_and_track import vehicle_detect_and_track
 from utils.track_vehicle_change_lane import track_vehicle_change_lane
+from utils.prepare_input_for_display import prepare_input_for_display
+
 
 WINDOW_NAME = 'TrtYOLODemo'
 
@@ -81,33 +83,10 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
 
         # lane detection and display lane
         averaged_lines, img = lane_detection(img)
-        
+
         # Display properties of vehicle (bounding box, changing lane status, track id)
-        if len(tracker_elements) != 0:
-            tracker_elements_draw = []
-            # Prepare input data for display function
-            for ele in tracker_elements:
-                temp = []
-                trk_id = ele[0]
-                boxes = ele[1]
-                confs = ele[2]
-                clss = ele[3]
-                temp.append(trk_id)
-                temp.append(boxes)
-                temp.append(confs)
-                temp.append(clss)
-                # If tracked any vehicle before
-                if len(tracker_change_lane) != 0:
-                    # And if old vehicle still exist (keep being tracked),
-                    # we will display chaning lane status. If not, vice versa.
-                    for ele_2 in tracker_change_lane:
-                        if trk_id == ele_2['tracker_id']:
-                            temp.append(ele_2['change_lane_flg'])
-                        else:
-                            temp.append(False)
-                else:
-                    temp.append(False)
-                tracker_elements_draw.append(temp)
+        if len(tracker_change_lane) != 0:
+            tracker_elements_draw = prepare_input_for_display(img_copy,tracker_change_lane)
             img = vis.draw_bboxes(img, tracker_elements_draw)
 
         # display fps
