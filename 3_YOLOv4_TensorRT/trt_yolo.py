@@ -21,7 +21,7 @@ from utils.lane_detection import lane_detection
 from utils.vehicle_detect_and_track import vehicle_detect_and_track
 from utils.track_vehicle_change_lane import track_vehicle_change_lane
 from utils.prepare_input_for_display import prepare_input_for_display
-
+from utils.vehicle_detect_only import vehicle_detect_only
 
 WINDOW_NAME = 'TrtYOLODemo'
 
@@ -62,6 +62,8 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
     tic = time.time()
     
     frame_count = 0
+    frame_match_count = 0
+    stop_each_frame = 0
     while True:
         if cv2.getWindowProperty(WINDOW_NAME, 0) < 0:
             break
@@ -76,8 +78,11 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
         frame_count+=1
 
         # Vehicle detection and tracking
-        tracker_elements = vehicle_detect_and_track(trt_yolo, img_copy, conf_th, frame_count)
+        tracker_elements = vehicle_detect_and_track(trt_yolo, img, conf_th, frame_count)
         
+        # Vehicle detection only
+        # tracker_elements = vehicle_detect_only(trt_yolo, img_copy, conf_th, frame_count)
+
         # Track vehicle change lane
         tracker_change_lane = track_vehicle_change_lane(vid_name, img_copy, tracker_elements, frame_count)
 
@@ -90,8 +95,28 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
             img = vis.draw_bboxes(img, tracker_elements_draw)
 
         # display fps
-        img = show_fps(img, fps)
+        img = show_fps(img, fps, frame_count)
         
+        for ele in tracker_elements:
+            # red car, video3, detect and track, MOSSE
+            # temp_idx = [2,4,5]
+            # red car, video3, detect and track, MedianFlow
+            # temp_idx = [2]
+            # red car, video3, detect only
+            # temp_idx = [2,29,30,35,37]
+            
+            # orange car, video3, detect and track, MOSSE
+            # temp_idx = [1]
+            # orange car, video3, detect and track, MedianFlow
+            # temp_idx = [1,3]
+            # orange car, video3, detect only
+            temp_idx = [1]
+            
+            if ele[0] in temp_idx:
+                frame_match_count += 1
+                break
+        # print("Percent detect",round(frame_match_count/frame_count*100,2))
+        # print("Percent detect",round(frame_match_count/250*100,2))
         cv2.imshow(WINDOW_NAME, img)
         
         # calculate fps
@@ -99,7 +124,16 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
         curr_fps = 1.0 / (toc - tic)
         fps = curr_fps if fps == 0.0 else (fps*0.95 + curr_fps*0.05)
         tic = toc
-                    
+        
+        if stop_each_frame == 1:
+            while True:
+                key = cv2.waitKey(1)
+                if key == ord('s'): # r key: resume program
+                    break
+                elif key == ord('d'): # r key: resume program
+                    stop_each_frame = 0
+                    break
+        
         # keyboard check
         key = cv2.waitKey(1)
         if key == 27:  # ESC key: quit program
@@ -108,6 +142,12 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name):
             while True:
                 key = cv2.waitKey(1)
                 if key == ord('r'): # r key: resume program
+                    break
+        elif key == ord('a'): # e key: pause program
+            while True:
+                key = cv2.waitKey(1)
+                if key == ord('s'): # r key: resume program
+                    stop_each_frame = 1
                     break
         
 def main():

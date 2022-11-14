@@ -140,7 +140,7 @@ class BBoxVisualization():
                 img = cv2.addWeighted(img, 1, mask, scale_add_weighted, 1)
                 
                 # Show ID vehicle which is changing lane
-                cv2.putText(img, str(trk_id) + "change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
+                cv2.putText(img, str(trk_id) + ": change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
 
             if dis_driver is not None:
                 # Draw a line from driver to vehicle in front
@@ -148,6 +148,18 @@ class BBoxVisualization():
                                     (coor_veh_driver[2],coor_veh_driver[3]), color, 2)
                 # Draw box mention distance between driver and vehicle in front
                 img = draw_boxed_text(img, str(dis_driver) + "m", (dis_driver_loc[0]+10,dis_driver_loc[1]), (0,0,0))
+                
+                if dis_driver < 10:
+                    # Make bounding box of vehicle changing lane flash (bling bling)
+                    mask = np.zeros_like(img)
+                    region_vehicle = np.array([[(x_min, y_max),
+                                                (x_min, y_min),
+                                                (x_max, y_min),
+                                                (x_max, y_max),]], np.int32)
+                    cv2.fillPoly(mask, region_vehicle, (255,0,255))
+                    img = cv2.addWeighted(img, 1, mask, scale_add_weighted, 1)
+                    
+                    cv2.putText(img, str(trk_id) + ": too close", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
                 
             txt_loc = (max(x_min+2, 0), max(y_min+2, 0))
             cls_name = self.cls_dict.get(cl, 'CLS{}'.format(cl))
