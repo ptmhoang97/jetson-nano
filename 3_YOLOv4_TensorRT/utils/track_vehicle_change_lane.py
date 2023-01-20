@@ -1,10 +1,8 @@
-from utils.lane_detection import get_video_name,get_x_top_center_region_detect_lane
+from utils.lane_detection import get_x_top_center_region_detect_lane
 
 tracker_change_lane = []
-def track_vehicle_change_lane(vid_name, img, tracker_elements, frame_count):
+def track_vehicle_change_lane(img, tracker_elements, frame_count):
     global tracker_change_lane
-    # Get input video name
-    get_video_name(vid_name)
     
     # Get x coordinate of center point between 2 two point of region detect lane
     region_x_top_center_point = get_x_top_center_region_detect_lane(img)

@@ -10,6 +10,12 @@ import math
 
 def get_video_name(vid_name):
     global video_name
+    
+    if '/' in vid_name:
+        vid_name = vid_name[vid_name.rfind('/')+1:]
+    else:
+        vid_name
+        
     video_name = vid_name
     
 def get_x_top_center_region_detect_lane(img):
@@ -297,13 +303,16 @@ percent_2_lines = 0
 backup_averaged_lines = [None,None]
 video_name = ""
 is_lane_detect_first_time = False
-def lane_detection(frame):
+def lane_detection(frame, vid_name):
     global total_frame
     global frame_2_lines
     global percent_2_lines
     global backup_averaged_lines
     global is_lane_detect_first_time
     global counter_frame_after_detect_lane_first_time
+    
+    # Get input video name
+    get_video_name(vid_name)
 
     total_frame += 1
 

@@ -4,32 +4,73 @@ import math
 def is_old(center_Xd, center_Yd, tracker_elements):
     max_distance = 50
     flg_is_old = False
+    track_id_satisfy_max_distance = []
     for idx_ele,ele in enumerate(tracker_elements):
+        track_id = ele[0]
         box_t_coordinate = ele[1]
         (xt, yt, wt, ht) = [int(c) for c in box_t_coordinate]
         center_Xt, center_Yt = int((xt + (xt + wt)) / 2.0), int((yt + (yt + ht)) / 2.0)
         distance = math.sqrt((center_Xt - center_Xd) ** 2 + (center_Yt - center_Yd) ** 2)
-
-        if distance < max_distance:
+        
+        # red car, video3, detect and track, MOSSE
+        # temp_idx = [2,4,5]
+        # red car, video3, detect and track, MedianFlow
+        temp_idx = [2]
+        # red car, video3, detect only
+        # temp_idx = [2,29,30,35,37]
+        
+        # if ele[0] in temp_idx:
+            # print(ele[0],center_Xd,center_Yd,center_Xt,center_Yt,distance)
+        # print(ele[0],center_Xd,center_Yd,center_Xt,center_Yt,distance)
+        
+        if distance <= max_distance:
             flg_is_old = True
             return flg_is_old, idx_ele
+        
+        # if distance < max_distance:
+            # track_id_satisfy_max_distance.append([idx_ele,distance])
+
+    # if len(track_id_satisfy_max_distance) > 0:
+        # flg_is_old = True
+        # temp1 = []
+        # temp2 = []
+        # for val in track_id_satisfy_max_distance:
+            # temp1.append(val[0])
+            # temp2.append(val[1])
+        # idx_ele = temp1[temp2.index(min(temp2))]
+        # print("track_id_satisfy_max_distance",track_id_satisfy_max_distance)
+        # # print(temp1)
+        # # print(temp2)
+        # # print(min(temp2))
+        # # print(temp2.index(min(temp2)))
+        # # print(idx_ele)
+        # return flg_is_old, idx_ele
+    # else:
+        # pass
     return flg_is_old, -1
 
 def create_tracker():
     # tracker = cv2.legacy.TrackerKCF_create()
-    # tracker = cv2.legacy.TrackerMedianFlow_create()
-    tracker = cv2.legacy.TrackerMOSSE_create()
 
+    if model_tracking_global == "MOSSE":
+        tracker = cv2.legacy.TrackerMOSSE_create()
+    elif model_tracking_global == "MedianFlow":
+        tracker = cv2.legacy.TrackerMedianFlow_create()
+        
     return tracker
     
 obj_cnt = 0
 curr_trackers = []
+model_tracking_global = ''
 
-def vehicle_detect_and_track(trt_yolo,img_copy,conf_th,frame_count):
-    global obj_cnt,curr_trackers
+def vehicle_detect_and_track(trt_yolo,img_copy,conf_th,frame_count,model_tracking):
+    global obj_cnt,curr_trackers,model_tracking_global
     tracker_elements = []
     # First frame, detect and track
     if frame_count == 1:
+        obj_cnt = 0
+        curr_trackers = []
+        model_tracking_global = model_tracking
         # Get properties of all vehicle in frame after detection
         boxes_detect, confs, clss = trt_yolo.detect(img_copy, conf_th)
         # Loop each vehicle for tracking
@@ -81,6 +122,7 @@ def vehicle_detect_and_track(trt_yolo,img_copy,conf_th,frame_count):
         # After every 15 frame, we will perform detection and update tracker again
         if frame_count % 15 == 0:
             boxes_detect, confs, clss = trt_yolo.detect(img_copy, conf_th)
+            # print("go")
             for idx,box_d in enumerate(boxes_detect):
                 x1,y1,x2,y2 = box_d
                 box_tmp = [0,0,0,0]

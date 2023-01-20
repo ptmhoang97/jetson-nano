@@ -4,16 +4,27 @@ import math
 def is_old(center_Xd, center_Yd, tracker_elements, img_copy):
     height = img_copy.shape[0]
     width = img_copy.shape[1]
-    max_distance = 50
+    max_distance = 20
     flg_is_old = False
     for idx_ele,ele in enumerate(tracker_elements):
         box_t_coordinate = ele[1]
         (xt, yt, wt, ht) = [int(c) for c in box_t_coordinate]
         center_Xt, center_Yt = int((xt + (xt + wt)) / 2.0), int((yt + (yt + ht)) / 2.0)
         distance = math.sqrt((center_Xt - center_Xd) ** 2 + (center_Yt - center_Yd) ** 2)
+        
+        # red car, video3, detect and track, MOSSE
+        # temp_idx = [2,4,5]
+        # red car, video3, detect and track, MedianFlow
+        # temp_idx = [2]
+        # red car, video3, detect only
+        temp_idx = [2,29,30,35,37]
+        
+        if ele[0] in temp_idx and distance <= max_distance:
+            print(ele[0],center_Xd,center_Yd,center_Xt,center_Yt,distance)
+        
         if center_Yt < height*0.6:
             max_distance = 20
-        if distance < max_distance:
+        if distance <= max_distance:
             flg_is_old = True
             return flg_is_old, idx_ele
     return flg_is_old, -1
@@ -62,6 +73,7 @@ def vehicle_detect_only(trt_yolo,img_copy,conf_th,frame_count):
             tracker_elements.append([tracker_id,box_d,tracker_conf,tracker_cls])
             
         boxes_d, confs, clss = trt_yolo.detect(img_copy, conf_th)
+        print("go",frame_count-1,frame_count)
         for idx,box_d in enumerate(boxes_d):
             x1,y1,x2,y2 = box_d
             box_tmp = [0,0,0,0]
@@ -82,7 +94,6 @@ def vehicle_detect_only(trt_yolo,img_copy,conf_th,frame_count):
                 new_obj['tracker_class'] = clss[idx]
 
                 curr_trackers.append(new_obj)
-                print("new",obj_cnt)
             else:
                 box_t_track_id = tracker_elements[idx_box_t][0]
 
@@ -93,5 +104,4 @@ def vehicle_detect_only(trt_yolo,img_copy,conf_th,frame_count):
                 new_obj['tracker_class'] = clss[idx]
 
                 curr_trackers.append(new_obj)
-                print("old",box_t_track_id)
     return tracker_elements
