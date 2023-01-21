@@ -49,7 +49,7 @@ python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 **Run model**
 - Go folder "YOLOv4_TensorRT", open cmd window and run command below:
 ```
-python3 trt_yolo.py --video video1.mp4 -m yolov4-tiny-416 -m2 MOSSE
+python3 trt_yolo.py --video video1.mp4 -m yolov4-tiny-416 -m2 mosse
 ```
 **Eval model with COCO**
 ```
@@ -66,7 +66,7 @@ sudo pip3 install progressbar2
 python3 eval_yolo.py -m yolov4-tiny-416
 ```
 **Note**
-- You can change "yolov4-tiny-416" to another model. Here is list of model:
+- You can change "yolov4-tiny-416" to another model. Here is list of model detection:
 ```
 yolov4
 yolov4-288
@@ -74,4 +74,9 @@ yolov4-416
 yolov4-tiny
 yolov4-tiny-288
 yolov4-tiny-416
+```
+- You can change "mosse" to another model. Here is list of model tracking:
+```
+medianflow
+none
 ```
