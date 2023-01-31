@@ -52,10 +52,16 @@ python3 yolo_to_onnx.py -m yolov4-tiny-416
 ```
 python3 onnx_to_tensorrt.py -m yolov4-tiny-416
 ```
-**Run model**
+**Run model without GUI**
 - Go folder "YOLOv4_TensorRT", open cmd window and run command below:
 ```
 python3 trt_yolo.py --video video1.mp4 -m yolov4-tiny-416 -m2 mosse
+```
+**Run model with GUI**
+- Go folder "YOLOv4_TensorRT", open cmd window and run command below:
+```
+pip3 install Pillow
+python3 gui.py
 ```
 **Eval model with COCO**
 ```
