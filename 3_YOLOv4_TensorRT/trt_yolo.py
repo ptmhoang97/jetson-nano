@@ -10,7 +10,7 @@ import time
 import argparse
 
 import cv2
-import pycuda.autoinit  # This is needed for initializing CUDA driver
+# import pycuda.autoinit  # This is needed for initializing CUDA driver
 
 from utils.yolo_classes import get_cls_dict
 from utils.camera import add_camera_args, Camera
@@ -86,7 +86,7 @@ def loop_detect_and_track(cam, trt_yolo, conf_th, vis, vid_name, model_tracking)
         # Frame counter
         frame_count+=1
         
-        if model_tracking == "Detect only":
+        if model_tracking == "none":
             # Vehicle detection only
             tracker_elements = vehicle_detect_only(trt_yolo, img_copy, conf_th, frame_count)
         else:

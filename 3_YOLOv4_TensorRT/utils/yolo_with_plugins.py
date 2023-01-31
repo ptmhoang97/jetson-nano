@@ -12,7 +12,7 @@ import numpy as np
 import cv2
 import tensorrt as trt
 import pycuda.driver as cuda
-
+import pycuda.autoinit  # This is needed for initializing CUDA driver
 
 try:
     ctypes.cdll.LoadLibrary('./plugins/libyolo_layer.so')

@@ -162,9 +162,9 @@ label_dropListModelTracking = Label(frame_dropListModelTracking,
 label_dropListModelTracking.pack(pady = (15,0), side = LEFT)
 
 list_model_tracking = [
-"MOSSE",
-"MedianFlow",
-"Detect only",
+"mosse",
+"medianflow",
+"none",
 ] #etc
 
 modelTrackingChosen = StringVar(frame_dropListModelTracking)

@@ -52,9 +52,9 @@ def is_old(center_Xd, center_Yd, tracker_elements):
 def create_tracker():
     # tracker = cv2.legacy.TrackerKCF_create()
 
-    if model_tracking_global == "MOSSE":
+    if model_tracking_global == "mosse":
         tracker = cv2.legacy.TrackerMOSSE_create()
-    elif model_tracking_global == "MedianFlow":
+    elif model_tracking_global == "medianflow":
         tracker = cv2.legacy.TrackerMedianFlow_create()
         
     return tracker
