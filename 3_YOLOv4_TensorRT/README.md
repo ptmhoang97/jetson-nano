@@ -25,6 +25,12 @@ pip3 install pycuda
 sudo apt-get install libprotobuf-dev protobuf-compiler
 pip3 install onnx==1.4.1
 ```
+**Fix errors when run command below (you can ignore this and run command below to see what happen, I'm lazy to note it ...)**
+```
+pip3 install --upgrade protobuf
+pip3 install opencv-contrib-python==4.5.5.62
+pip3 install numpy==1.19.4
+```
 **Make plugins**
 - Go to folder "plugins", open cmd window and run command below. When done, there will be files "libyolo_layer.so" and yolo_layer.o generated.
 ```
