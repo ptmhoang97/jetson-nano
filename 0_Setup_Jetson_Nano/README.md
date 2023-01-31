@@ -70,6 +70,7 @@ free -h
 **7. Install pip3:**
 ```
 sudo apt-get -y install python3-pip
+pip3 install --upgrade pip
 ```
 
 **8. Install Jetson Stats:**
