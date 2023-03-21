@@ -123,33 +123,19 @@ class BBoxVisualization():
                                             in zip(tracker_id, boxes, confs, clss, change_lane_flg, \
                                                    distance_driver, distance_driver_loc, coordinate_vehicle_and_driver):
             cl = int(cl)
-            x_min, y_min, x_max, y_max = bb[0], bb[1], bb[2], bb[3]
-            color = self.colors[cl]
-            cv2.rectangle(img, (x_min, y_min), (x_max, y_max), color, 2)
-            cv2.circle(img, (int((x_min+x_max)/2), int((y_min+y_max)/2)), 4, (0, 255, 0), -1)
-            cv2.putText(img, str(trk_id), (int((x_min+x_max)/2), int((y_min+y_max)/2)), 0, 1, (0, 0, 255), 2)
-            
-            if chg_lane_flg is not False:
-                # Make bounding box of vehicle changing lane flash (bling bling)
-                mask = np.zeros_like(img)
-                region_vehicle = np.array([[(x_min, y_max),
-                                            (x_min, y_min),
-                                            (x_max, y_min),
-                                            (x_max, y_max),]], np.int32)
-                cv2.fillPoly(mask, region_vehicle, (255,0,255))
-                img = cv2.addWeighted(img, 1, mask, scale_add_weighted, 1)
-                
-                # Show ID vehicle which is changing lane
-                cv2.putText(img, str(trk_id) + ": change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
 
-            if dis_driver is not None:
-                # Draw a line from driver to vehicle in front
-                img = cv2.line(img, (coor_veh_driver[0],coor_veh_driver[1]),\
-                                    (coor_veh_driver[2],coor_veh_driver[3]), color, 2)
-                # Draw box mention distance between driver and vehicle in front
-                img = draw_boxed_text(img, str(dis_driver) + "m", (dis_driver_loc[0]+10,dis_driver_loc[1]), (0,0,0))
+            # Show bounding box of all
+            # if a >= 0:
+
+            # Show bounding box of car and truck only (class car = 2, truck = 7)
+            if cl == 2 or cl == 7:
+                x_min, y_min, x_max, y_max = bb[0], bb[1], bb[2], bb[3]
+                color = self.colors[cl]
+                cv2.rectangle(img, (x_min, y_min), (x_max, y_max), color, 2)
+                cv2.circle(img, (int((x_min+x_max)/2), int((y_min+y_max)/2)), 4, (0, 255, 0), -1)
+                cv2.putText(img, str(trk_id), (int((x_min+x_max)/2), int((y_min+y_max)/2)), 0, 1, (0, 0, 255), 2)
                 
-                if dis_driver < 10:
+                if chg_lane_flg is not False:
                     # Make bounding box of vehicle changing lane flash (bling bling)
                     mask = np.zeros_like(img)
                     region_vehicle = np.array([[(x_min, y_max),
@@ -159,10 +145,30 @@ class BBoxVisualization():
                     cv2.fillPoly(mask, region_vehicle, (255,0,255))
                     img = cv2.addWeighted(img, 1, mask, scale_add_weighted, 1)
                     
-                    cv2.putText(img, str(trk_id) + ": too close", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
-                
-            txt_loc = (max(x_min+2, 0), max(y_min+2, 0))
-            cls_name = self.cls_dict.get(cl, 'CLS{}'.format(cl))
-            txt = '{} {:.2f}'.format(cls_name, cf)
-            img = draw_boxed_text(img, txt, txt_loc, color)
+                    # Show ID vehicle which is changing lane
+                    cv2.putText(img, str(trk_id) + ": change lane", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
+
+                if dis_driver is not None:
+                    # Draw a line from driver to vehicle in front
+                    img = cv2.line(img, (coor_veh_driver[0],coor_veh_driver[1]),\
+                                        (coor_veh_driver[2],coor_veh_driver[3]), color, 2)
+                    # Draw box mention distance between driver and vehicle in front
+                    img = draw_boxed_text(img, str(dis_driver) + "m", (dis_driver_loc[0]+10,dis_driver_loc[1]), (0,0,0))
+                    
+                    if dis_driver < 10:
+                        # Make bounding box of vehicle changing lane flash (bling bling)
+                        mask = np.zeros_like(img)
+                        region_vehicle = np.array([[(x_min, y_max),
+                                                    (x_min, y_min),
+                                                    (x_max, y_min),
+                                                    (x_max, y_max),]], np.int32)
+                        cv2.fillPoly(mask, region_vehicle, (255,0,255))
+                        img = cv2.addWeighted(img, 1, mask, scale_add_weighted, 1)
+                        
+                        cv2.putText(img, str(trk_id) + ": too close", (int((x_min+x_max)/2), int((y_min+y_max)/2) + 25), 0, 1, (0, 0, 255), 2)
+                    
+                txt_loc = (max(x_min+2, 0), max(y_min+2, 0))
+                cls_name = self.cls_dict.get(cl, 'CLS{}'.format(cl))
+                txt = '{} {:.2f}'.format(cls_name, cf)
+                img = draw_boxed_text(img, txt, txt_loc, color)
         return img
